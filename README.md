@@ -1,3 +1,6 @@
+[![build](https://img.shields.io/github/workflow/status/danieletorelli/librespeed-cli/Docker/master?style=for-the-badge)](https://github.com/danieletorelli/librespeed-cli/actions?query=workflow%3A%22Docker%22+branch%3Amaster)
+[![release](https://img.shields.io/github/v/release/danieletorelli/librespeed-cli?style=for-the-badge)](https://github.com/danieletorelli/librespeed-cli/releases/latest)
+
 # librespeed-cli
 
 Multi-arch docker image of [librespeed/speedtest-cli](https://github.com/librespeed/speedtest-cli).
