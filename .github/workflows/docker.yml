@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - '*'
+    tags:
+      - '*'
   release:
     types:
       - 'published'
@@ -42,6 +44,6 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           cache-to: type=inline
-          push: ${{ (github.event_name == 'push' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/master' }}
+          push: ${{ ((github.event_name == 'push' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/master') || github.event_name == 'release' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
