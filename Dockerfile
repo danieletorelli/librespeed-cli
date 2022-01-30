@@ -1,4 +1,4 @@
-FROM alpine AS build
+FROM alpine:3.15 AS build
 RUN apk add --no-cache \
     bash \
     git \
@@ -10,7 +10,7 @@ RUN cd librespeed-cli && \
     ./build.sh && \
     mv out/librespeed-cli-$(go env GOOS)-$(go env GOARCH) /usr/local/bin/librespeed-cli
 
-FROM alpine AS runtime
+FROM alpine:3.15 AS runtime
 COPY --from=build /usr/local/bin/librespeed-cli /usr/local/bin/librespeed-cli
 CMD /usr/local/bin/librespeed-cli
 
