@@ -7,9 +7,13 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    reviewers:
+      - "danieletorelli"
 
   # Maintain dependencies for Dockerfile
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
+    reviewers:
+      - "danieletorelli"
