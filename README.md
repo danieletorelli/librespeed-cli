@@ -1,4 +1,4 @@
-[![build](https://img.shields.io/github/workflow/status/danieletorelli/librespeed-cli/Docker/master?style=for-the-badge)](https://github.com/danieletorelli/librespeed-cli/actions?query=workflow%3A%22Docker%22+branch%3Amaster)
+[![build](https://img.shields.io/github/actions/workflow/status/danieletorelli/librespeed-cli/docker.yml?branch=master&style=for-the-badge)](https://github.com/danieletorelli/librespeed-cli/actions?query=workflow%3A%22Docker%22+branch%3Amaster)
 [![release](https://img.shields.io/github/v/release/danieletorelli/librespeed-cli?style=for-the-badge)](https://github.com/danieletorelli/librespeed-cli/releases/latest)
 
 # librespeed-cli
