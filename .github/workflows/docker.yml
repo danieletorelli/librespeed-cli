@@ -8,7 +8,10 @@ on:
       - '*'
   release:
     types:
-      - 'published'
+      - published
+  pull_request_review:
+    types:
+      - submitted
   workflow_dispatch:
 
 env:
@@ -47,3 +50,19 @@ jobs:
           push: ${{ ((github.event_name == 'push' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/master') || github.event_name == 'release' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  auto-pr-handling:
+    needs: build-and-push-image
+    if: github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: TimonVS/pr-labeler-action@v4
+        with:
+          configuration-path: .github/auto_label.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: pascalgn/automerge-action@v0.15.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_LABELS: "automerge,!WIP,!do-not-merge"
+          MERGE_METHOD: squash
