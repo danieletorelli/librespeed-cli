@@ -61,7 +61,7 @@ jobs:
           configuration-path: .github/auto_label.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: pascalgn/automerge-action@v0.15.6
+      - uses: pascalgn/automerge-action@v0.16.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MERGE_LABELS: "automerge,!WIP,!do-not-merge"
