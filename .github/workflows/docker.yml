@@ -56,7 +56,7 @@ jobs:
     if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
     steps:
-      - uses: TimonVS/pr-labeler-action@v4
+      - uses: TimonVS/pr-labeler-action@v5
         with:
           configuration-path: .github/auto_label.yml
         env:
