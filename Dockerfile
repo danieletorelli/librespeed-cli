@@ -12,5 +12,5 @@ RUN cd librespeed-cli && \
 
 FROM alpine:3.21.0 AS runtime
 COPY --from=build /usr/local/bin/librespeed-cli /usr/local/bin/librespeed-cli
-CMD /usr/local/bin/librespeed-cli
+CMD ["/usr/local/bin/librespeed-cli"]
 
