@@ -51,12 +51,12 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  auto-pr-handling:
+  auto-merge:
     needs: build-and-push-image
     if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
     steps:
-      - uses: TimonVS/pr-labeler-action@v5
+      - uses: TimonVS/pr-labeler-action@v5.0.0
         with:
           configuration-path: .github/auto_label.yml
         env:
