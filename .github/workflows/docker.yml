@@ -26,7 +26,42 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v6
+      - if: github.event_name == 'release'
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
+      - if: github.event_name != 'release'
+        uses: actions/checkout@v6
+      - name: Resolve upstream ref
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${GITHUB_EVENT_NAME}" == "release" ]]; then
+            raw_tag='${{ github.event.release.tag_name }}'
+
+            if [[ ! "${raw_tag}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(_[0-9]+)?$ ]]; then
+              echo "::error::Invalid release tag '${raw_tag}'. Expected vX.Y.Z or vX.Y.Z_N."
+              exit 1
+            fi
+
+            upstream_ref="${raw_tag%%_*}"
+          else
+            upstream_ref="master"
+          fi
+
+          echo "upstream_ref=${upstream_ref}" >> "${GITHUB_OUTPUT}"
+      - name: Verify upstream tag exists
+        if: github.event_name == 'release'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if ! git ls-remote --exit-code --tags https://github.com/librespeed/speedtest-cli.git "refs/tags/${{ steps.version.outputs.upstream_ref }}" > /dev/null; then
+            echo "::error::Upstream tag '${{ steps.version.outputs.upstream_ref }}' not found."
+            exit 1
+          fi
       - uses: docker/setup-qemu-action@v4
       - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v4
@@ -45,6 +80,8 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64,linux/arm/v7
+          build-args: |
+            UPSTREAM_REF=${{ steps.version.outputs.upstream_ref }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           cache-to: type=inline
           push: ${{ ((github.event_name == 'push' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/master') || github.event_name == 'release' }}
