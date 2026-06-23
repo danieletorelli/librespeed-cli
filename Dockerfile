@@ -1,4 +1,4 @@
-FROM alpine:3.24.0 AS build
+FROM alpine:3.24.1 AS build
 ARG UPSTREAM_REF=master
 RUN apk add --no-cache \
     bash \
@@ -11,6 +11,6 @@ RUN cd librespeed-cli && \
     ./build.sh && \
     mv out/librespeed-cli-$(go env GOOS)-$(go env GOARCH) /usr/local/bin/librespeed-cli
 
-FROM alpine:3.24.0 AS runtime
+FROM alpine:3.24.1 AS runtime
 COPY --from=build /usr/local/bin/librespeed-cli /usr/local/bin/librespeed-cli
 CMD ["/usr/local/bin/librespeed-cli"]
